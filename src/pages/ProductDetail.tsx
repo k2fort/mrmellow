@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Minus, Plus, Share2 } from 'lucide-react';
-import img01 from '../../assets/01.png';
-import img001 from '../../assets/001.png';
+import img01 from '../assets/01.png';
+import img001 from '../assets/001.png';
 
 export default function ProductDetail() {
     const { id } = useParams();

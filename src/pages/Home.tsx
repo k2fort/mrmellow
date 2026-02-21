@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { HeartHandshake, Leaf, Sparkles, ChevronDown } from 'lucide-react';
 import mainGif from '../assets/maingif.gif';
-import companyBoxesImg from '../../assets/IMG_8372.webp';
-import addidasLogo from '../../assets/addidas.png';
-import finalLogo from '../../assets/final-logo_1.png';
-import hamanyaLogo from '../../assets/hamanya.png';
-import logocatchLogo from '../../assets/logocatch.png';
-import sweetimeLogo from '../../assets/sweetime.png';
-import tropiconLogo from '../../assets/tropiconagency.png';
+import companyBoxesImg from '../assets/IMG_8372.webp';
+import addidasLogo from '../assets/addidas.png';
+import finalLogo from '../assets/final-logo_1.png';
+import hamanyaLogo from '../assets/hamanya.png';
+import logocatchLogo from '../assets/logocatch.png';
+import sweetimeLogo from '../assets/sweetime.png';
+import tropiconLogo from '../assets/tropiconagency.png';
 
 export default function Home() {
   return (

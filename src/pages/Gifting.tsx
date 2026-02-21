@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import packImg from '../../assets/pack.png';
+import packImg from '../assets/pack.png';
 
 export default function Gifting() {
     return (

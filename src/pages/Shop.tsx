@@ -1,9 +1,9 @@
 import { Plus, Gift } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import img01 from '../../assets/01.png';
-import img001 from '../../assets/001.png';
-import giftImg from '../../assets/gift.png';
+import img01 from '../assets/01.png';
+import img001 from '../assets/001.png';
+import giftImg from '../assets/gift.png';
 
 export default function Shop() {
   const { addToCart } = useCart();

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Minus, Plus, Share2 } from 'lucide-react';
-import packImg from '../../assets/pack.png';
+import packImg from '../assets/pack.png';
 
 export default function AllFlavorsPackDetail() {
     const { addToCart } = useCart();

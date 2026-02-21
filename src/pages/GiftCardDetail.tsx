@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { Minus, Plus, Share2 } from 'lucide-react';
-import giftImg from '../../assets/gift.png';
+import giftImg from '../assets/gift.png';
 
 export default function GiftCardDetail() {
     const { addToCart } = useCart();
