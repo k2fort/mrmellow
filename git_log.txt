@@ -1,0 +1,5 @@
+commit 7fca816d4ed30b0ccbaff9ead39242d15dfbdbb8
+Author: tonyandalice-budget <tonyandalicehh@gmail.com>
+Date:   Sun Feb 22 00:43:21 2026 +0200
+
+    chore: move images to src/assets and update references, add new pages
