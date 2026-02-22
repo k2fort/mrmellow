@@ -114,11 +114,11 @@ export default function Navbar() {
               className="fixed inset-0 bg-slate-800/40 backdrop-blur-sm z-50"
             />
             <motion.div
-              initial={{ x: '100%' }}
+              initial={{ x: '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: '100%' }}
+              exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
+              className="fixed top-0 left-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
             >
               <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                 <h2 className="text-3xl font-display text-slate-800">תיק הקסמים שלך</h2>
@@ -152,7 +152,7 @@ export default function Navbar() {
                             <Trash2 size={18} aria-hidden="true" />
                           </button>
                         </div>
-                        <p className="text-mallow-pink font-bold">${item.price.toFixed(2)}</p>
+                        <p className="text-mallow-pink font-bold">₪{item.price.toFixed(2)}</p>
                         <div className="flex items-center gap-3 bg-white w-fit rounded-full p-1 shadow-sm">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -180,7 +180,7 @@ export default function Navbar() {
                 <div className="p-6 border-t border-slate-100 bg-white">
                   <div className="flex justify-between items-center mb-6">
                     <span className="text-lg font-semibold text-slate-500">קסם כולל</span>
-                    <span className="text-3xl font-display text-slate-800">${totalPrice.toFixed(2)}</span>
+                    <span className="text-3xl font-display text-slate-800">₪{totalPrice.toFixed(2)}</span>
                   </div>
                   <button className="w-full bg-mallow-pink text-white py-4 rounded-full font-bold text-lg shadow-xl shadow-mallow-pink/30 hover:scale-105 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2">
                     לתשלום עכשיו ✨
