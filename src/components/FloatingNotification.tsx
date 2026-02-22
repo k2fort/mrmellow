@@ -33,7 +33,7 @@ export default function FloatingNotification() {
 
             <AnimatePresence>
                 {!isOpen ? (
-                    <div className="fixed bottom-6 left-6 z-[999] floating-slow cursor-pointer origin-bottom-left">
+                    <div className="fixed bottom-6 right-6 z-[999] floating-slow cursor-pointer origin-bottom-right">
                         <motion.div
                             key="closed-blob"
                             layoutId="floating-blob"

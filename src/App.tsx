@@ -16,7 +16,7 @@ export default function App() {
   return (
     <CartProvider>
       <Router>
-        <div className="font-sans text-slate-700 mallows-bg selection:bg-mallow-pink selection:text-white min-h-screen flex flex-col">
+        <div className="font-sans text-slate-700 mallows-bg selection:bg-mallow-pink selection:text-white min-h-screen flex flex-col overflow-x-hidden relative w-full">
           <Navbar />
           <main className="flex-grow">
             <Routes>

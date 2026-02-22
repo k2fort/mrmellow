@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 export default function Navbar() {
   const { totalItems, isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, totalPrice } = useCart();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { name: 'מרשמלו', path: '/shop' },
@@ -38,7 +39,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl flex flex-col gap-3">
-        <div className={`transition-all duration-300 rounded-full px-8 py-3 flex items-center justify-between ${isScrolled ? 'bg-white/80 backdrop-blur-xl border-4 border-white shadow-2xl shadow-mallow-pink/20' : 'bg-transparent border-4 border-transparent'
+        <div className={`transition-all duration-300 rounded-[2rem] px-6 sm:px-8 py-3 flex items-center justify-between relative ${isScrolled || isMobileMenuOpen ? 'bg-white/95 backdrop-blur-xl border-4 border-white shadow-2xl shadow-mallow-pink/20' : 'bg-transparent border-4 border-transparent'
           }`}>
           <Link to="/" className="flex items-center gap-2 group z-50">
             <img src={logo} alt="עולם המרשמלו" className="h-12 w-auto object-contain" />
@@ -57,27 +58,61 @@ export default function Navbar() {
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
-            <button aria-label="Search" className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-slate-600 hover:bg-secondary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2">
-              <Search size={20} aria-hidden="true" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <button aria-label="Search" className="w-11 h-11 rounded-full bg-secondary/20 flex items-center justify-center text-slate-600 hover:bg-secondary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2">
+              <Search size={22} aria-hidden="true" />
             </button>
-            <button aria-label="User Profile" className="w-10 h-10 rounded-full bg-mallow-lavender/20 flex items-center justify-center text-slate-600 hover:bg-mallow-lavender transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-lavender focus-visible:ring-offset-2">
-              <User size={20} aria-hidden="true" />
+            <button aria-label="User Profile" className="hidden sm:flex w-11 h-11 rounded-full bg-mallow-lavender/20 items-center justify-center text-slate-600 hover:bg-mallow-lavender transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-lavender focus-visible:ring-offset-2">
+              <User size={22} aria-hidden="true" />
             </button>
             <button
               onClick={() => setIsCartOpen(true)}
               aria-label="Open cart"
-              className="relative w-10 h-10 rounded-full bg-mallow-pink text-white flex items-center justify-center hover:scale-110 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2"
+              className="relative w-11 h-11 rounded-full bg-mallow-pink text-white flex items-center justify-center hover:scale-110 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2"
             >
-              <ShoppingBag size={20} aria-hidden="true" />
+              <ShoppingBag size={22} aria-hidden="true" />
               {totalItems > 0 && (
                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-slate-800 border-2 border-white">
                   {totalItems}
                 </span>
               )}
             </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden w-11 h-11 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink"
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-[80px] left-0 right-0 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl shadow-mallow-pink/20 overflow-hidden md:hidden border-4 border-white z-40"
+            >
+              <div className="flex flex-col p-4 w-full text-center">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`text-lg font-bold hover:bg-mallow-pink/10 hover:text-mallow-pink py-4 px-6 rounded-xl transition-all ${location.pathname === link.path ? 'bg-mallow-pink/10 text-mallow-pink' : 'text-slate-600'
+                      }`}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Global Announcement Banner */}
         <div className="bg-white/80 backdrop-blur-md rounded-full px-6 py-1.5 flex items-center justify-between shadow-lg shadow-mallow-pink/10 mx-auto w-fit max-w-[80vw] md:max-w-2xl border border-mallow-pink/20">

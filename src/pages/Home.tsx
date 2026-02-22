@@ -13,19 +13,19 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full min-h-[100svh] flex items-center justify-center pt-32 md:pt-48 pb-12 md:pb-24 px-6 overflow-visible md:overflow-hidden">
+      <section className="relative w-full min-h-[100svh] flex items-center justify-center pt-32 md:pt-48 pb-12 md:pb-24 px-6 overflow-hidden">
         <div className="absolute top-20 -left-20 w-96 h-96 bg-secondary/20 blur-3xl rounded-full floating-slow z-0"></div>
         <div className="absolute bottom-10 -right-20 w-[30rem] h-[30rem] bg-mallow-lavender/30 blur-3xl rounded-full floating-reverse z-0"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16 w-full py-16">
-          <div className="flex-[1.2] text-center md:text-right flex flex-col justify-center space-y-8 md:space-y-10">
-            <div className="inline-block px-5 py-1.5 bg-white rounded-full text-mallow-pink font-bold text-sm uppercase tracking-widest border-2 border-mallow-pink/20 w-fit mx-auto md:mx-0 shadow-sm">
+          <div className="flex-[1.2] text-center md:text-right flex flex-col justify-center space-y-6 md:space-y-10">
+            <div className="inline-block px-4 py-1.5 md:px-5 bg-white rounded-full text-mallow-pink font-bold text-[11px] md:text-sm uppercase tracking-widest border-2 border-mallow-pink/20 w-fit mx-auto md:mx-0 shadow-sm">
               ברוכים הבאים למר. שמלו
             </div>
-            <h2 className="text-6xl md:text-8xl font-display text-slate-800 leading-none">
+            <h2 className="text-5xl sm:text-7xl md:text-8xl font-display text-slate-800 leading-tight md:leading-none">
               הסיפור שלנו
             </h2>
-            <div className="text-lg md:text-xl text-slate-600 max-w-lg leading-relaxed mx-auto md:mx-0 space-y-4">
+            <div className="text-base sm:text-lg md:text-xl text-slate-600 max-w-lg leading-relaxed mx-auto md:mx-0 space-y-4">
               <p className="font-bold text-mallow-pink">איך הכול התחיל?</p>
               <p>שני חברים, ערב אחד, רעיון לא מתוכנן - וככה נולד ה־MR.SHMALLOW 🍭</p>
               <p>חשבנו: למה לא להפוך את המרשמלו הילדותי למשהו חדש, מושלם, ומפתיע?</p>
@@ -108,38 +108,38 @@ export default function Home() {
             <h2 className="text-6xl font-display text-slate-800 mt-2">השאלות הכי מתוקות</h2>
           </div>
 
-          <div className="relative min-h-[1600px] md:min-h-[1100px] flex flex-wrap justify-center gap-6 md:gap-8">
-            <div className="faq-bubble md:absolute top-0 left-[2%] w-full md:w-[26rem] bg-mallow-pink text-white p-8 rounded-[4rem] floating-slow shadow-xl shadow-mallow-pink/20 z-10">
+          <div className="relative md:min-h-[1100px] flex flex-col md:flex-row flex-wrap items-center justify-center gap-6 md:gap-8">
+            <div className="faq-bubble md:absolute top-0 left-[2%] w-full md:w-[26rem] md:max-w-md bg-mallow-pink text-white p-8 rounded-[3rem] md:rounded-[4rem] floating-slow shadow-xl shadow-mallow-pink/20 z-10 mx-auto">
               <h4 className="font-display text-2xl mb-3">מה זה מר שמלו ?</h4>
               <p className="text-sm leading-relaxed opacity-95">מרשמלו פרימיום הנוצר בעבודת יד במגוון טעמים מיוחדים, תוספות מושחתות וחוויה אחת בלתי נשכחת. אנחנו מציעים מארזים לכל מאורע כמו שמעולם לא טעמתם.</p>
             </div>
 
-            <div className="faq-bubble md:absolute top-[8%] right-[5%] w-full md:w-80 bg-secondary text-slate-700 p-8 rounded-[3.5rem] floating-reverse shadow-xl shadow-secondary/20 z-20">
+            <div className="faq-bubble md:absolute top-[8%] right-[5%] w-full md:w-80 md:max-w-xs bg-secondary text-slate-700 p-8 rounded-[3rem] md:rounded-[3.5rem] floating-reverse shadow-xl shadow-secondary/20 z-20 mx-auto">
               <h4 className="font-display text-2xl mb-3 text-slate-800">האם המרשמלו כשר?</h4>
               <p className="text-sm leading-relaxed">בהחלט, המרשמלו שלנו כשר בהשגחת הרבנות רעננה.</p>
             </div>
 
-            <div className="faq-bubble md:absolute top-[25%] left-[30%] w-full md:max-w-xl bg-mallow-lavender text-slate-700 p-10 rounded-[5rem] floating-delayed shadow-2xl shadow-mallow-lavender/30 z-30">
-              <h4 className="font-display text-3xl mb-4 text-slate-800 text-center">אלרגנים וגלוטן?</h4>
+            <div className="faq-bubble md:absolute top-[25%] left-[30%] w-full bg-mallow-lavender text-slate-700 p-8 md:p-10 rounded-[3rem] md:rounded-[5rem] md:max-w-xl floating-delayed shadow-2xl shadow-mallow-lavender/30 z-30 mx-auto">
+              <h4 className="font-display text-2xl md:text-3xl mb-4 text-slate-800 text-center">אלרגנים וגלוטן?</h4>
               <p className="text-sm text-center leading-relaxed">המוצר עלול להכיל עקבות של חלב, גלוטן (חיטה, שעורה, שיפון, שיבולת שועל), שומשום, בוטנים, ביצים, סויה, אגוזים (פיסטוק, שקדים, לוז, קוקוס, מקדמיה, מלך, פקאן, ברזיל, ערמונים), וצנוברים (קשיו).</p>
             </div>
 
-            <div className="faq-bubble md:absolute top-[45%] right-[2%] w-full md:w-[26rem] bg-accent text-slate-700 p-8 rounded-[3rem] floating-slow shadow-xl shadow-accent/20 z-10">
+            <div className="faq-bubble md:absolute top-[45%] right-[2%] w-full md:w-[26rem] md:max-w-md bg-accent text-slate-700 p-8 rounded-[3rem] floating-slow shadow-xl shadow-accent/20 z-10 mx-auto">
               <h4 className="font-display text-2xl mb-3 text-slate-800">מתי אני אקבל את המרשמלו שלי ?</h4>
               <p className="text-sm leading-relaxed">אנחנו במר שמלו משקיעים את כל המאמצים כדי להכין לכם את ההזמנה כמה שיותר מהר! מציעים אפשרויות משלוח מהירות מאוד הכוללות משלוח אקספרס שמגיע תוך יום יומים.</p>
             </div>
 
-            <div className="faq-bubble md:absolute top-[50%] left-[5%] w-full md:w-80 bg-mallow-blue text-slate-700 p-8 rounded-[3rem] floating-reverse shadow-xl shadow-mallow-blue/20 z-20">
+            <div className="faq-bubble md:absolute top-[50%] left-[5%] w-full md:w-80 md:max-w-xs bg-mallow-blue text-slate-700 p-8 rounded-[3rem] floating-reverse shadow-xl shadow-mallow-blue/20 z-20 mx-auto">
               <h4 className="font-display text-xl mb-2 text-slate-800">איך לאחסן את המרשמלו?</h4>
               <p className="text-sm leading-relaxed">מומלץ במקום קריר ויבש. רוב המרשמלו מחזיקים כ-2 חודשים בתנאים אופטימלים.</p>
             </div>
 
-            <div className="faq-bubble md:absolute bottom-[10%] right-[35%] w-full md:w-96 bg-white border-2 border-mallow-pink text-slate-700 p-8 rounded-[4rem] floating-delayed shadow-xl shadow-mallow-pink/10 z-10">
+            <div className="faq-bubble md:absolute bottom-[10%] right-[35%] w-full md:w-96 md:max-w-md bg-white border-2 border-mallow-pink text-slate-700 p-8 rounded-[3rem] md:rounded-[4rem] floating-delayed shadow-xl shadow-mallow-pink/10 z-10 mx-auto">
               <h4 className="font-display text-2xl mb-3 text-mallow-pink">האם אתם עושים הזמנות לאירועים?</h4>
               <p className="text-sm leading-relaxed">כמובן, נשמח לקחת חלק בארוע שלכם ולהרים את האווירה עם מוצר בלתי נשכח לאורחים שלכם.</p>
             </div>
 
-            <div className="faq-bubble md:absolute bottom-0 left-[2%] w-full md:w-[28rem] bg-secondary/80 backdrop-blur-md text-slate-800 p-8 rounded-[4rem] floating-slow shadow-2xl shadow-secondary/30 z-30">
+            <div className="faq-bubble md:absolute bottom-0 left-[2%] w-full md:w-[28rem] md:max-w-md bg-secondary/80 backdrop-blur-md text-slate-800 p-8 rounded-[3rem] md:rounded-[4rem] floating-slow shadow-2xl shadow-secondary/30 z-30 mx-auto">
               <h4 className="font-display text-2xl mb-3">מה העלות שילוח?</h4>
               <p className="text-sm leading-relaxed">עלות השילוח היא 24 ש"ח למשלוח לכל נקודה בארץ עם שליח עד הבית.<br /><br /><b>בקנייה מעל 199 ש"ח קבלו משלוח חינם.</b></p>
             </div>

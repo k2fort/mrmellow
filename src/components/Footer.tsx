@@ -45,15 +45,15 @@ export default function Footer() {
           <div className="space-y-8">
             <h4 className="font-bold text-accent mb-8 uppercase text-xs tracking-[0.2em]">הרשמו למועדון שלנו</h4>
             <p className="text-sm text-slate-400">היו הראשונים לשמוע על מבצעים ומוצרים חדשים</p>
-            <div className="flex bg-slate-700/50 p-2 rounded-full border border-slate-600 focus-within:ring-2 focus-within:ring-mallow-pink focus-within:border-transparent">
+            <div className="flex flex-col sm:flex-row gap-3 bg-slate-700/50 p-2 sm:rounded-full rounded-2xl border border-slate-600 focus-within:ring-2 focus-within:ring-mallow-pink focus-within:border-transparent">
               <label htmlFor="newsletter" className="sr-only">כתובת אימייל</label>
               <input
                 id="newsletter"
                 type="email"
                 placeholder="כתובת אימייל"
-                className="bg-transparent border-none focus:ring-0 px-4 flex-1 text-sm outline-none text-white placeholder:text-slate-400"
+                className="bg-transparent border-none focus:ring-0 px-4 py-2 sm:py-0 flex-1 text-sm outline-none text-white placeholder:text-slate-400"
               />
-              <button className="bg-mallow-pink text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-mallow-pink/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800">
+              <button className="bg-mallow-pink text-white w-full sm:w-auto px-6 py-3 sm:py-2 rounded-xl sm:rounded-full text-sm font-bold hover:bg-mallow-pink/90 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800">
                 הצטרפו
               </button>
             </div>
