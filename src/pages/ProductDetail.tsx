@@ -1,94 +1,135 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { Minus, Plus, Share2 } from 'lucide-react';
+import { Minus, Plus, Share2, ArrowRight } from 'lucide-react';
+import { client } from '../lib/shopify';
 import img01 from '../assets/01.png';
 import img001 from '../assets/001.png';
 
 export default function ProductDetail() {
     const { id } = useParams();
-    const { addToCart } = useCart();
+    const { addToCart, isUpdating } = useCart();
     const [quantity, setQuantity] = useState(1);
-    const sizes = [
-        { label: '4 יחידות', price: 24.00 },
-        { label: '8 יחידות', price: 46.00 },
-        { label: '12 יחידות', price: 65.00 }
-    ];
-    const [selectedSize, setSelectedSize] = useState(sizes[0]);
-    const [activeImage, setActiveImage] = useState(0);
+    const [shopifyProduct, setShopifyProduct] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
-    // We default to the requested bubblegum images for now
-    const images = [img01, img001];
+    // We will populate sizes dynamically from Shopify variants
+    const [selectedSize, setSelectedSize] = useState<any>(null);
+    const [activeImage, setActiveImage] = useState(0);
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: 'instant' });
+
+        if (id) {
+            // Because Shopify SDK fetch takes a specific graphQL ID format, 
+            // the easiest robust way without encoding is fetching all and finding by handle/id
+            client.product.fetchAll().then((products) => {
+                // Try to find by ID (if we pass the raw id) or handle
+                const found = products.find(p => p.id === id || p.id.split('/').pop() === id || p.handle === id);
+                if (found) {
+                    setShopifyProduct(found);
+                    if (found.variants && found.variants.length > 0) {
+                        setSelectedSize(found.variants[0]);
+                    }
+                }
+                setLoading(false);
+            }).catch(err => {
+                console.error(err);
+                setLoading(false);
+            });
+        }
     }, [id]);
 
     // sizes moved up
 
-    const handleAddToCart = () => {
-        addToCart({
-            id: id || 'bubblegum-jellybeans',
-            name: 'מרשמלו בטעם מסטיק וסוכריות',
-            price: selectedSize.price,
-            image: images[0]
-        });
+    const handleAddToCart = async () => {
+        if (!shopifyProduct || !selectedSize) return;
+        // Pass the actual unit price from the variant node explicitly, so the cart can save it 
+        // to bypass Shopify Checkout API's aggressive discounting
+        const currentPrice = Number(selectedSize.price.amount || selectedSize.price);
+        await addToCart(selectedSize.id, quantity, currentPrice);
+        // quantity resets or user feedback could go here
     };
+
+    if (loading) {
+        return <div className="pt-40 pb-24 text-center font-bold text-mallow-pink text-2xl">טוען מוצר...</div>;
+    }
+
+    if (!shopifyProduct) {
+        return (
+            <div className="pt-40 pb-24 text-center">
+                <h2 className="text-3xl font-display text-slate-800 mb-4">המוצר לא נמצא</h2>
+                <Link to="/shop" className="text-mallow-pink underline">חזרה לחנות</Link>
+            </div>
+        );
+    }
+
+    const images = shopifyProduct.images.length > 0
+        ? shopifyProduct.images.map((img: any) => img.src)
+        : [img01];
 
     return (
         <div className="pt-40 mt-8 pb-24 px-6 md:px-12 max-w-7xl mx-auto flex flex-col md:flex-row gap-12 lg:gap-20" dir="rtl">
             {/* Images Section */}
             <div className="flex-1 space-y-4">
                 <div className="aspect-square bg-slate-50 rounded-[3rem] p-8 flex items-center justify-center relative overflow-hidden shadow-sm border border-slate-100">
-                    <img src={images[activeImage]} alt="מרשמלו בטעם מסטיק וסוכריות" className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
+                    <img src={images[activeImage]} alt={shopifyProduct.title} className="w-full h-full object-contain hover:scale-105 transition-transform duration-500" />
                 </div>
-                <div className="flex gap-4 overflow-x-auto pb-2">
-                    {images.map((img, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => setActiveImage(idx)}
-                            className={`w-24 h-24 rounded-2xl bg-white border-2 overflow-hidden flex-shrink-0 flex items-center justify-center p-2 transition-all ${activeImage === idx ? 'border-slate-800' : 'border-transparent hover:border-slate-200 shadow-sm'}`}
-                        >
-                            <img src={img} alt="" className="w-full h-full object-contain" />
-                        </button>
-                    ))}
-                </div>
+                {images.length > 1 && (
+                    <div className="flex gap-4 overflow-x-auto pb-2">
+                        {images.map((img: string, idx: number) => (
+                            <button
+                                key={idx}
+                                onClick={() => setActiveImage(idx)}
+                                className={`w-24 h-24 rounded-2xl bg-white border-2 overflow-hidden flex-shrink-0 flex items-center justify-center p-2 transition-all ${activeImage === idx ? 'border-slate-800' : 'border-transparent hover:border-slate-200 shadow-sm'}`}
+                            >
+                                <img src={img} alt="" className="w-full h-full object-contain" />
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Product Details */}
             <div className="flex-[1.2] flex flex-col">
-                <h1 className="text-4xl md:text-5xl font-display text-slate-800 mb-4">מרשמלו בטעם מסטיק וסוכריות</h1>
+                <Link to="/shop" className="flex items-center gap-2 text-slate-500 hover:text-mallow-pink mb-4 text-sm font-bold w-fit transition-colors">
+                    <ArrowRight size={16} /> חזרה לחנות
+                </Link>
+
+                <h1 className="text-4xl md:text-5xl font-display text-slate-800 mb-4">{shopifyProduct.title}</h1>
 
                 <div className="mb-6">
                     <div className="flex items-baseline gap-2">
-                        <span className="text-slate-500 text-sm">מחיר רגיל</span>
-                        <span className="text-2xl font-bold text-slate-800">{selectedSize.price.toFixed(2)} ש״ח</span>
+                        <span className="text-slate-500 text-sm">מחיר</span>
+                        <span className="text-2xl font-bold text-slate-800">{selectedSize ? Number(selectedSize.price.amount).toFixed(2) : '0.00'} ש״ח</span>
                     </div>
                     <p className="text-sm text-slate-500 mt-1">כולל מס. עלות משלוח מחושבת במהלך התשלום.</p>
                 </div>
 
-                {/* Size Selection */}
-                <div className="mb-8">
-                    <p className="text-slate-800 font-bold mb-3">גודל</p>
-                    <div className="flex flex-wrap gap-3">
-                        {sizes.map(size => (
-                            <button
-                                key={size.label}
-                                onClick={() => setSelectedSize(size)}
-                                className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${selectedSize.label === size.label
-                                    ? 'bg-slate-800 text-white border-slate-800'
-                                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-800'
-                                    }`}
-                            >
-                                {size.label}
-                            </button>
-                        ))}
+                {/* Size Selection (Variants) */}
+                {shopifyProduct.variants && shopifyProduct.variants.length > 1 && (
+                    <div className="mb-8">
+                        <p className="text-slate-800 font-bold mb-3">{shopifyProduct.options[0]?.name || 'אפשרויות'}</p>
+                        <div className="flex flex-wrap gap-3">
+                            {shopifyProduct.variants.map((variant: any) => (
+                                <button
+                                    key={variant.id}
+                                    onClick={() => setSelectedSize(variant)}
+                                    className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${selectedSize?.id === variant.id
+                                        ? 'bg-slate-800 text-white border-slate-800'
+                                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-800'
+                                        }`}
+                                >
+                                    {variant.title}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Quantity */}
                 <div className="mb-8">
-                    <p className="text-slate-800 font-bold mb-3">כמות ()</p>
+                    <p className="text-slate-800 font-bold mb-3">כמות</p>
                     <div className="flex items-center border border-slate-200 bg-white rounded-full w-32 h-12">
                         <button
                             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -108,15 +149,22 @@ export default function ProductDetail() {
 
                 {/* Actions */}
                 <div className="space-y-3 mb-10">
-                    <button
-                        onClick={handleAddToCart}
-                        className="w-full bg-white border-2 border-slate-800 text-slate-800 py-4 rounded-full font-bold hover:bg-slate-50 transition-colors"
-                    >
-                        הוספה לסל
-                    </button>
-                    <button className="w-full bg-mallow-pink text-white py-4 rounded-full font-bold hover:bg-mallow-pink/90 transition-colors shadow-lg shadow-mallow-pink/20">
-                        קנה עכשיו
-                    </button>
+                    {selectedSize?.available === false || shopifyProduct.availableForSale === false ? (
+                        <button
+                            disabled
+                            className="w-full bg-slate-200 text-slate-500 py-4 rounded-full font-bold cursor-not-allowed"
+                        >
+                            מצטערים, המוצר אזל במלאי
+                        </button>
+                    ) : (
+                        <button
+                            onClick={handleAddToCart}
+                            disabled={isUpdating}
+                            className={`w-full py-4 rounded-full font-bold transition-colors shadow-lg ${isUpdating ? 'bg-mallow-pink/50 text-white cursor-not-allowed' : 'bg-mallow-pink text-white hover:bg-mallow-pink/90 shadow-mallow-pink/20'}`}
+                        >
+                            {isUpdating ? 'מוסיף לעגלה...' : 'הוספה לסל'}
+                        </button>
+                    )}
                 </div>
 
                 {/* Pickup Info */}
@@ -133,19 +181,9 @@ export default function ProductDetail() {
 
                 {/* Description */}
                 <div className="pr-4 border-r-2 border-mallow-pink/30 mb-10 text-slate-600 leading-relaxed space-y-4">
-                    <p className="font-bold text-slate-800 text-lg">🍬 מרשמלו בטעם מסטיק וסוכריות – מתוק, צבעוני ובלתי נשכח</p>
-                    <p>מרשמלו בעבודת יד בטעם מסטיק נוסטלגי עם סוכריות צבעוניות. חוויה מתוקה לילדים ולמבוגרים מושלם כמתנה או כפינוק אישי.</p>
-
-                    <p className="font-bold text-slate-800 mt-6 pt-4">✨ מה תאהבו במרשמלו שלנו?</p>
-                    <ul className="space-y-2 list-none p-0 relative">
-                        <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-mallow-pink mt-2 shrink-0"></div>טעם מסטיק עשיר שמחזיר אותנו לילדות</li>
-                        <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-mallow-pink mt-2 shrink-0"></div>סוכריות צבעוניות להפתעה בכל ביס</li>
-                        <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-mallow-pink mt-2 shrink-0"></div>עבודת יד מוקפדת במנות קטנות לרעננות מושלמת</li>
-                        <li className="flex items-start gap-2"><div className="w-1.5 h-1.5 rounded-full bg-mallow-pink mt-2 shrink-0"></div>מתאים לאירועים, ימי הולדת, וועדי עובדים מתנות מקוריות ופינוק יומיומי</li>
-                    </ul>
-
-                    <p className="font-bold text-slate-800 mt-6 pt-4">🎁 מושלם כמתנה ייחודית</p>
-                    <p>המרשמלו בטעם מסטיק עם סוכריות הופך כל רגע לחגיגה. הוא צבעוני, משמח ומלא קסם – מתנה מתוקה שכל אחד ישמח לקבל.</p>
+                    <h3 className="font-bold text-slate-800 text-lg">תיאור המוצר:</h3>
+                    {/* Render HTML description securely from Shopify */}
+                    <div dangerouslySetInnerHTML={{ __html: shopifyProduct.descriptionHtml || shopifyProduct.description }} className="prose prose-sm prose-slate max-w-none text-slate-600" />
                 </div>
 
                 {/* Footer info within product */}

@@ -6,7 +6,7 @@ import logo from '../assets/logo.png';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function Navbar() {
-  const { totalItems, isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, totalPrice } = useCart();
+  const { totalItems, isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, totalPrice, checkoutUrl, isUpdating } = useCart();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -217,9 +217,15 @@ export default function Navbar() {
                     <span className="text-lg font-semibold text-slate-500">קסם כולל</span>
                     <span className="text-3xl font-display text-slate-800">₪{totalPrice.toFixed(2)}</span>
                   </div>
-                  <button className="w-full bg-mallow-pink text-white py-4 rounded-full font-bold text-lg shadow-xl shadow-mallow-pink/30 hover:scale-105 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2">
-                    לתשלום עכשיו ✨
-                  </button>
+                  {checkoutUrl ? (
+                    <a href={checkoutUrl} className="block text-center w-full bg-mallow-pink text-white py-4 rounded-full font-bold text-lg shadow-xl shadow-mallow-pink/30 hover:scale-105 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2">
+                      {isUpdating ? 'מעדכן עגלה...' : 'לתשלום עכשיו ✨'}
+                    </a>
+                  ) : (
+                    <button disabled className="w-full bg-mallow-pink/50 text-white py-4 rounded-full font-bold text-lg cursor-not-allowed">
+                      טוען קופה...
+                    </button>
+                  )}
                 </div>
               )}
             </motion.div>

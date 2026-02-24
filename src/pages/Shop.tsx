@@ -1,39 +1,53 @@
 import { Plus, Gift } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useState, useEffect } from 'react';
+import { client } from '../lib/shopify';
 import img01 from '../assets/01.png';
 import img001 from '../assets/001.png';
 import giftImg from '../assets/gift.png';
 
+
+
 export default function Shop() {
   const { addToCart } = useCart();
+  const [shopifyProducts, setShopifyProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch products from Shopify
+    client.product.fetchAll().then((products) => {
+      setShopifyProducts(products);
+      setLoading(false);
+    }).catch(err => {
+      console.error("Error fetching shopify products", err);
+      setLoading(false);
+    });
+  }, []);
 
   const baseProduct = {
-    name: 'מרשמלו בטעם מסטיק וסוכריות',
-    tag: 'הקלאסיקה',
+    tag: 'חדש במלאי',
     tagColor: 'text-secondary',
-    priceDisplay: 'החל מ-24 ש"ח',
-    price: 24.00,
-    image: img01,
-    hoverImage: img001,
     animation: 'floating-slow',
     borderColor: 'border-mallow-pink/10',
     hoverShadow: 'hover:shadow-mallow-pink/30',
   };
 
-  const products = [
-    { id: 'bubblegum-jellybeans', ...baseProduct },
-    { id: 'rose-garden', ...baseProduct },
-    { id: 'coconut-cloud', ...baseProduct },
-    { id: 'midnight-puff', ...baseProduct },
-    { id: 'strawberry-magic', ...baseProduct },
-    { id: 'salted-caramel', ...baseProduct },
-    { id: 'tropical-lemon', ...baseProduct },
-    { id: 'wild-berries', ...baseProduct },
-    { id: 'rich-chocolate', ...baseProduct },
-    { id: 'royal-pistachio', ...baseProduct },
-    { id: 'fresh-mint', ...baseProduct },
-  ];
+  // Filter to only show products with Custom Product Type 'Candy', or 'סוכריות'
+  // Alternatively search title since tags aren't retrieved by the basic API
+  const displayProducts = shopifyProducts.filter(product => {
+    const typeStr = String(product.productType || '').toLowerCase();
+    const titleStr = String(product.title || '').toLowerCase();
+
+    // Check if it's a bucket/gifting item based on type or title
+    const isCandyBucket = typeStr.includes('bucket') || typeStr.includes('מארז') || titleStr.includes('מארז');
+
+    // For Shop page, it must have 'candy'/'סוכריות' in type, OR it's just NOT a bucket
+    const isCandyType = typeStr.includes('candy') || typeStr.includes('סוכריות');
+
+    // If they haven't set any custom type, default to showing it here UNLESS it's a bucket
+    return isCandyType || (typeStr === '' && !isCandyBucket);
+  });
 
   return (
     <div className="pt-40 pb-24 px-6 relative mt-10" id="shop">
@@ -44,77 +58,78 @@ export default function Shop() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 relative items-stretch">
-          {products.map((product) => (
-            <div key={product.id} className={`w-full group ${product.animation}`}>
-              <div className={`bg-white h-full p-6 flex flex-col rounded-[3rem] shadow-xl transition-all border-b-8 border-r-8 ${product.borderColor} ${product.hoverShadow}`}>
-                <div className="aspect-square rounded-[2rem] overflow-hidden mb-6 bg-slate-50 flex items-center justify-center relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
-                  />
-                  {(product as any).hoverImage && (
-                    <img
-                      src={(product as any).hoverImage}
-                      alt={`${product.name} hover`}
-                      className="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
-                    />
-                  )}
-                </div>
-                <div className="text-center flex-grow flex flex-col">
-                  <span className={`text-xs font-bold uppercase tracking-widest ${product.tagColor}`}>
-                    {product.tag}
-                  </span>
-                  <h4 className="text-2xl font-display text-slate-800 mt-1">{product.name}</h4>
-                  <p className="text-mallow-pink font-bold text-xl mt-2">
-                    {(product as any).priceDisplay || `₪${product.price.toFixed(2)}`}
-                  </p>
+          {loading ? (
+            <div className="col-span-full text-center py-20 text-mallow-pink font-bold">טוען מוצרים מ-Shopify...</div>
+          ) : displayProducts.length === 0 ? (
+            <div className="col-span-full text-center py-20 text-slate-500 font-bold">לא נמצאו מוצרים. יש להוסיף מוצרים לחנות השופיפיי שלך.</div>
+          ) : (
+            displayProducts.map((product) => {
+              // Extract Shopify data or use fallback format
+              const isShopify = !!product.variants;
+              const title = product.title || product.name;
+              const price = isShopify ? product.variants[0].price.amount : product.price;
+              const imageSrc = isShopify && product.images.length > 0 ? product.images[0].src : product.image || img01;
+              const productId = isShopify ? product.id : product.id;
 
-                  <div className="mt-auto pt-4">
-                    <Link
-                      to={`/product/${product.id}`}
-                      aria-label={`בחירת גודל עבור ${product.name}`}
-                      className="w-full bg-mallow-pink/10 hover:bg-mallow-pink hover:text-white text-mallow-pink py-3 rounded-2xl font-bold transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2"
-                    >
-                      בחירת גודל
-                    </Link>
+              // Check availability
+              const isAvailable = isShopify ? product.availableForSale !== false : true;
+
+              return (
+                <div key={productId} className={`w-full group ${product.animation || baseProduct.animation} ${!isAvailable ? 'opacity-70 grayscale-[30%]' : ''}`}>
+                  <div className={`bg-white h-full p-6 flex flex-col rounded-[3rem] shadow-xl transition-all border-b-8 border-r-8 ${product.borderColor || baseProduct.borderColor} ${product.hoverShadow || baseProduct.hoverShadow}`}>
+                    <div className="aspect-square rounded-[2rem] overflow-hidden mb-6 bg-slate-50 flex items-center justify-center relative">
+                      <img
+                        src={imageSrc}
+                        alt={title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
+                      />
+                      {!isShopify && product.hoverImage && (
+                        <img
+                          src={product.hoverImage}
+                          alt={`${title} hover`}
+                          className="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
+                        />
+                      )}
+
+                      {!isAvailable && (
+                        <div className="absolute inset-0 bg-white/40 flex items-center justify-center font-bold text-slate-700 text-xl backdrop-blur-[2px] z-10">
+                          אזל במלאי
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-center flex-grow flex flex-col">
+                      <span className={`text-xs font-bold uppercase tracking-widest ${!isAvailable ? 'text-slate-400' : (product.tagColor || baseProduct.tagColor)}`}>
+                        {!isAvailable ? 'אזל מהמלאי' : (isShopify ? 'חדש' : product.tag || baseProduct.tag)}
+                      </span>
+                      <h4 className="text-2xl font-display text-slate-800 mt-1">{title}</h4>
+                      <p className="text-mallow-pink font-bold text-xl mt-2">
+                        {isShopify ? `₪${Number(price).toFixed(2)}` : (product.priceDisplay || `₪${product.price.toFixed(2)}`)}
+                      </p>
+
+                      <div className="mt-auto pt-4">
+                        {isAvailable ? (
+                          <Link
+                            to={`/product/${productId.split('/').pop()}`}
+                            aria-label={`בחירת גודל עבור ${title}`}
+                            className="w-full bg-mallow-pink/10 hover:bg-mallow-pink hover:text-white text-mallow-pink py-3 rounded-2xl font-bold transition-colors flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink focus-visible:ring-offset-2"
+                          >
+                            בחירת גודל
+                          </Link>
+                        ) : (
+                          <button
+                            disabled
+                            className="w-full bg-slate-100 text-slate-400 py-3 rounded-2xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
+                          >
+                            אזל במלאי
+                          </button>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
-
-          {/* 12th item: Magical Gift Box */}
-          <div className="w-full group floating-delayed">
-            <div className="bg-mallow-lavender h-full p-6 text-white rounded-[3rem] shadow-xl flex flex-col text-center transition-all border-b-8 border-r-8 border-mallow-pink/20 hover:shadow-mallow-lavender/40 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-mallow-pink/20 rounded-full blur-2xl"></div>
-
-              <div className="aspect-square rounded-[2rem] bg-white/10 flex items-center justify-center mb-6 border border-white/20 group-hover:bg-white/20 transition-colors duration-500 relative z-10 w-full overflow-hidden p-6">
-                <img src={giftImg} alt="Gift Card" className="w-full h-full object-contain group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 drop-shadow-lg" />
-              </div>
-
-              <div className="text-center flex-grow flex flex-col relative z-10">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/90">
-                  הרכיבו בעצמכם
-                </span>
-                <h4 className="text-2xl font-display mt-1 text-white">גיפט קארד מר שמלו</h4>
-                <p className="opacity-90 mt-2 text-xl font-bold leading-relaxed px-2 text-white">
-                  החל מ-50 ש"ח
-                </p>
-
-                <div className="mt-auto pt-4">
-                  <Link
-                    to="/product/gift-card"
-                    aria-label="בחירת גודל לגיפט קארד"
-                    className="w-full bg-white text-mallow-lavender py-3 rounded-2xl font-bold text-sm shadow-md hover:scale-105 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-mallow-lavender inline-block"
-                  >
-                    בחירת גודל
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
+              )
+            })
+          )}
 
         </div>
       </div>
