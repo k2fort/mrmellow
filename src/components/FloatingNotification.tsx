@@ -37,7 +37,7 @@ export default function FloatingNotification() {
                         <motion.div
                             key="closed-blob"
                             layoutId="floating-blob"
-                            className="w-[130px] h-[130px]"
+                            className="w-20 h-20 sm:w-[130px] sm:h-[130px]"
                             onClick={(e) => { setIsOpen(true); e.stopPropagation(); }}
                             transition={{ type: "spring", stiffness: 200, damping: 25 }}
                         >
@@ -47,11 +47,11 @@ export default function FloatingNotification() {
                                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
                                     className="flex flex-col items-center w-full justify-center"
                                 >
-                                    <div className="bg-mallow-pink/20 p-2 rounded-full shrink-0 mb-1">
-                                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-mallow-pink animate-pulse" />
+                                    <div className="bg-mallow-pink/20 p-1.5 sm:p-2 rounded-full shrink-0 mb-0.5 sm:mb-1">
+                                        <Sparkles className="w-4 h-4 sm:w-6 sm:h-6 text-mallow-pink animate-pulse" />
                                     </div>
-                                    <p className="font-bold text-slate-800 text-[11px] sm:text-xs leading-tight text-center">
-                                        בשורה משמחת<br />במיוחד!
+                                    <p className="font-bold text-slate-800 text-[8px] sm:text-xs leading-tight text-center">
+                                        בשורה משמחת<br className="hidden sm:block" /> במיוחד!
                                     </p>
                                 </motion.div>
                             </div>

@@ -8,8 +8,8 @@
   --color-mallow-blue: #DCEDC1;
   --color-mallow-lavender: #E0BBE4;
   --color-mallow-cream: #FFF9F2;
-  --font-display: "Bubblegum Sans", cursive;
-  --font-sans: "Fredoka", sans-serif;
+  --font-display: "Amatic SC", cursive;
+  --font-sans: "Rubik", sans-serif;
   --radius-blob: 30% 70% 70% 30% / 30% 30% 70% 70%;
   --radius-blob-alt: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
@@ -116,6 +116,13 @@
 body {
   background-color: #FFF9F2;
   overflow-x: hidden;
+  max-width: 100vw;
+}
+
+#root {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
 }
 
 .mallows-bg {

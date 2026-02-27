@@ -115,15 +115,15 @@ export default function Navbar() {
         </AnimatePresence>
 
         {/* Global Announcement Banner */}
-        <div className="bg-white/80 backdrop-blur-md rounded-full px-6 py-1.5 flex items-center justify-between shadow-lg shadow-mallow-pink/10 mx-auto w-fit max-w-[80vw] md:max-w-2xl border border-mallow-pink/20">
-          <button onClick={prevAnnouncement} aria-label="הודעה קודמת" className="hover:bg-mallow-pink/10 p-1.5 rounded-full shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink text-mallow-pink">
+        <div className="bg-white/80 backdrop-blur-md rounded-full px-3 sm:px-6 py-1.5 flex items-center justify-between shadow-lg shadow-mallow-pink/10 mx-auto w-full max-w-[90vw] md:max-w-2xl border border-mallow-pink/20 overflow-hidden">
+          <button onClick={prevAnnouncement} aria-label="הודעה קודמת" className="hover:bg-mallow-pink/10 p-1 sm:p-1.5 rounded-full shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink text-mallow-pink">
             <ChevronRight size={18} />
           </button>
-          <div className="grid px-4">
+          <div className="grid px-2 sm:px-4 flex-1 overflow-hidden">
             {announcements.map((announcement, index) => (
               <span
                 key={index}
-                className={`col-start-1 row-start-1 text-center select-none text-xs md:text-sm font-bold tracking-wide text-mallow-pink whitespace-nowrap transition-opacity duration-300 ${currentAnnouncement === index ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'
+                className={`col-start-1 row-start-1 text-center select-none text-[10px] sm:text-sm font-bold tracking-wide text-mallow-pink truncate transition-opacity duration-300 ${currentAnnouncement === index ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'
                   }`}
                 dir="rtl"
               >
@@ -131,7 +131,7 @@ export default function Navbar() {
               </span>
             ))}
           </div>
-          <button onClick={nextAnnouncement} aria-label="הודעה הבאה" className="hover:bg-mallow-pink/10 p-1 rounded-full shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink text-mallow-pink">
+          <button onClick={nextAnnouncement} aria-label="הודעה הבאה" className="hover:bg-mallow-pink/10 p-1 sm:p-1.5 rounded-full shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mallow-pink text-mallow-pink">
             <ChevronLeft size={18} />
           </button>
         </div>

@@ -1,4 +1,5 @@
 import { Share2 } from 'lucide-react';
+import ScrollReveal from '../components/ScrollReveal';
 
 export default function Blog() {
     return (
@@ -9,7 +10,7 @@ export default function Blog() {
 
                 <div className="relative z-10 w-full pt-4">
                     <div className="space-y-6">
-                        <div className="text-center md:text-right">
+                        <ScrollReveal direction="down" delay={0.1} className="text-center md:text-right">
                             <span className="text-mallow-pink font-bold uppercase tracking-widest text-xs">בלוג</span>
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2 mb-6">
                                 <p className="text-slate-500 text-sm">10 בספטמבר 2024</p>
@@ -22,9 +23,9 @@ export default function Blog() {
                             <p className="text-slate-600 leading-relaxed text-lg">
                                 ברוכים הבאים לממלכת המרשמלו – המקום שבו איכות, יצירתיות וטעם נפגשים כדי ליצור את הממתק המושלם. האתר שלנו נולד מתוך אהבה אמיתית למרקם האווירי והנימוח של המרשמלו, ומתוך רצון להביא לכם חוויה שונה מכל מה שהכרתם.
                             </p>
-                        </div>
+                        </ScrollReveal>
 
-                        <div className="space-y-4 pt-4">
+                        <ScrollReveal direction="up" delay={0.2} className="space-y-4 pt-4">
                             <h4 className="font-bold text-slate-800 text-2xl">למה המרשמלו שלנו?</h4>
                             <p className="text-slate-600 leading-relaxed text-lg">
                                 אנחנו מאמינים שמרשמלו הוא הרבה יותר מסתם ממתק. הוא זיכרון ילדות, הוא תוספת מושלמת למדורה, והוא הפינוק האולטימטיבי ליד השוקו החם. כדי להבטיח את החוויה הטובה ביותר, אנחנו שמים דגש על:
@@ -35,9 +36,9 @@ export default function Blog() {
                                 <li><span className="font-bold text-slate-700">טריות ללא פשרות:</span> כל ענן מתוק שיוצא מאיתנו נארז בקפידה כדי לשמור על רכות מקסימלית.</li>
                                 <li><span className="font-bold text-slate-700">התאמה לכל אירוע:</span> מארזים למסיבות, מתנות למארחים או פשוט פינוק עצמי לסוף היום.</li>
                             </ul>
-                        </div>
+                        </ScrollReveal>
 
-                        <div className="space-y-4 pt-4">
+                        <ScrollReveal direction="up" delay={0.3} className="space-y-4 pt-4">
                             <h4 className="font-bold text-slate-800 text-2xl">החזון שלנו</h4>
                             <p className="text-slate-600 leading-relaxed text-lg">
                                 המטרה שלנו היא להפוך כל רגע למתוק יותר. אנחנו פועלים ללא הרף כדי לחדש, להפתיע ולספק לחובבי המתוקים בישראל מרשמלו איכותי בעבודת יד וביצור מוקפד, תוך שמירה על סטנדרטים גבוהים של שירות וטעם.
@@ -50,14 +51,14 @@ export default function Blog() {
                                     נסו לצלות את המרשמלו שלנו מעל אש גלויה לכמה שניות – המעטפת הקריספית והליבה הנמסה יגרמו לכם להתאהב מחדש.
                                 </p>
                             </div>
-                        </div>
+                        </ScrollReveal>
 
-                        <div className="space-y-4 pt-6 border-t-2 border-slate-100">
+                        <ScrollReveal direction="up" delay={0.4} className="space-y-4 pt-6 border-t-2 border-slate-100">
                             <h4 className="font-bold text-slate-800 text-2xl">משלוחים מהירים לכל הארץ</h4>
                             <p className="text-slate-600 leading-relaxed text-lg">
                                 אנחנו יודעים שכשמתחשק משהו מתוק, אי אפשר לחכות. לכן, הקמנו מערך משלוחי מרשמלו מהירים המגיע לכל נקודה בישראל. בין אם אתם בצפון, בדרום או במרכז, המארזים שלנו ייצאו אליכם בתיאום מהיר, באריזה השומרת על טריות ומרקם העננים, כדי שהפינוק יגיע אליכם בדיוק כפי שהוא יצא מהמפעל: רך, ריחני ומושלם.
                             </p>
-                        </div>
+                        </ScrollReveal>
                     </div>
                 </div>
             </div>

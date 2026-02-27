@@ -1,16 +1,17 @@
 import { Mail, Phone, Clock, Mail as MailIcon } from 'lucide-react';
+import ScrollReveal from '../components/ScrollReveal';
 
 export default function Contact() {
   return (
-    <div className="pt-40 pb-24 px-6 relative mt-10" id="contact">
-      <div className="max-w-6xl mx-auto bg-white rounded-[4rem] p-12 md:p-16 shadow-2xl relative overflow-hidden border-4 border-mallow-pink/10">
+    <div className="pt-32 md:pt-40 pb-36 lg:pb-24 px-4 sm:px-6 relative mt-6 md:mt-10" id="contact">
+      <div className="max-w-6xl mx-auto bg-white rounded-[3rem] md:rounded-[4rem] p-6 sm:p-12 md:p-16 shadow-2xl relative overflow-hidden border-4 border-mallow-pink/10">
         <div className="absolute top-0 right-0 w-32 h-32 bg-accent/20 rounded-bl-full"></div>
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/20 rounded-tr-full"></div>
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-start">
 
           {/* Contact Info - Right side (first in RTL context) */}
-          <div className="flex flex-col justify-center h-full pt-4">
+          <ScrollReveal direction="right" delay={0.1} className="flex flex-col justify-center h-full pt-4">
             <div className="space-y-6">
               <div>
                 <h3 className="text-4xl font-display text-slate-800 mb-2">יצירת קשר – מרשמלו</h3>
@@ -53,10 +54,10 @@ export default function Contact() {
                 <p className="text-slate-500 mt-2">תודה שבחרתם במרשמלו – מתוק יותר מכל דמיון.</p>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Contact Form - Left side (second in RTL context) */}
-          <div className="bg-mallow-cream/20 p-8 md:p-10 rounded-3xl border border-mallow-pink/10 shadow-sm relative overflow-hidden">
+          <ScrollReveal direction="left" delay={0.2} className="bg-mallow-cream/20 p-6 md:p-10 rounded-3xl border border-mallow-pink/10 shadow-sm relative overflow-hidden w-full">
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-white rounded-full opacity-50 blur-xl"></div>
 
             <div className="text-center mb-10 relative z-10">
@@ -122,7 +123,7 @@ export default function Contact() {
                 </button>
               </div>
             </form>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </div>
